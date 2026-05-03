@@ -1,5 +1,5 @@
 output "servers_by_location" {
-  description = "Servers grouped by datacenter location."
+  description = "Servers grouped by location."
   value       = module.servers.servers_by_location
 }
 

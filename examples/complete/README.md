@@ -31,20 +31,20 @@ terraform output server_private_ips
 ## Requirements
 
 | Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.45.0 |
+| ---- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.13.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.62.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >= 1.45.0 |
+| ---- | ------- |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >= 1.62.0 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_firewall"></a> [firewall](#module\_firewall) | danylomikula/firewall/hcloud | 1.0.0 |
 | <a name="module_network"></a> [network](#module\_network) | danylomikula/network/hcloud | 1.0.0 |
 | <a name="module_servers"></a> [servers](#module\_servers) | ../.. | n/a |
@@ -53,19 +53,19 @@ terraform output server_private_ips
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [hcloud_image.ubuntu](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/image) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_hcloud_token"></a> [hcloud\_token](#input\_hcloud\_token) | Hetzner Cloud API token. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_firewall_ids"></a> [firewall\_ids](#output\_firewall\_ids) | IDs of the created firewalls. |
 | <a name="output_network_id"></a> [network\_id](#output\_network\_id) | ID of the created network. |
 | <a name="output_private_key_file"></a> [private\_key\_file](#output\_private\_key\_file) | Path to the saved private key file. |

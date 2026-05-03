@@ -4,7 +4,6 @@ locals {
     for key, server in var.servers : key => {
       server_type                = server.server_type
       location                   = server.location
-      datacenter                 = server.datacenter
       image                      = server.image
       ssh_keys                   = distinct(concat(var.common_ssh_keys, server.ssh_keys))
       keep_disk                  = server.keep_disk
@@ -21,6 +20,7 @@ locals {
       ignore_remote_firewall_ids = server.ignore_remote_firewall_ids
       rebuild_protection         = server.rebuild_protection
       delete_protection          = server.delete_protection
+      allow_deprecated_images    = server.allow_deprecated_images
       networks                   = server.networks
       public_net                 = server.public_net
     }
@@ -33,7 +33,6 @@ resource "hcloud_server" "this" {
   name                       = each.key
   server_type                = each.value.server_type
   location                   = each.value.location
-  datacenter                 = each.value.datacenter
   image                      = each.value.image
   ssh_keys                   = each.value.ssh_keys
   keep_disk                  = each.value.keep_disk
@@ -48,6 +47,7 @@ resource "hcloud_server" "this" {
   ignore_remote_firewall_ids = each.value.ignore_remote_firewall_ids
   rebuild_protection         = each.value.rebuild_protection
   delete_protection          = each.value.delete_protection
+  allow_deprecated_images    = each.value.allow_deprecated_images
 
   dynamic "network" {
     for_each = each.value.networks
