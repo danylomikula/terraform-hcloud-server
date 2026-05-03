@@ -3,7 +3,6 @@ variable "servers" {
   type = map(object({
     server_type                = string
     location                   = optional(string)
-    datacenter                 = optional(string)
     image                      = string
     ssh_keys                   = optional(list(number), [])
     keep_disk                  = optional(bool, false)
@@ -20,6 +19,7 @@ variable "servers" {
     ignore_remote_firewall_ids = optional(bool, false)
     rebuild_protection         = optional(bool, false)
     delete_protection          = optional(bool, false)
+    allow_deprecated_images    = optional(bool, false)
 
     networks = optional(list(object({
       network_id = number

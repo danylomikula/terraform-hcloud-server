@@ -263,15 +263,15 @@ The module uses `ignore_changes` for:
 ## Requirements
 
 | Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.45.0 |
+| ---- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.13.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.62.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >= 1.45.0 |
+| ---- | ------- |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >= 1.62.0 |
 
 ## Modules
 
@@ -280,23 +280,24 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [hcloud_server.this](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_common_firewall_ids"></a> [common\_firewall\_ids](#input\_common\_firewall\_ids) | List of firewall IDs to apply to all servers in addition to per-server firewalls. | `list(number)` | `[]` | no |
 | <a name="input_common_labels"></a> [common\_labels](#input\_common\_labels) | Labels to apply to all servers in addition to per-server labels. | `map(string)` | `{}` | no |
 | <a name="input_common_ssh_keys"></a> [common\_ssh\_keys](#input\_common\_ssh\_keys) | List of SSH key IDs to add to all servers in addition to per-server keys. | `list(number)` | `[]` | no |
-| <a name="input_servers"></a> [servers](#input\_servers) | Map of server configurations keyed by friendly name. | <pre>map(object({<br/>    server_type                = string<br/>    location                   = optional(string)<br/>    datacenter                 = optional(string)<br/>    image                      = string<br/>    ssh_keys                   = optional(list(number), [])<br/>    keep_disk                  = optional(bool, false)<br/>    iso                        = optional(number)<br/>    rescue                     = optional(string)<br/>    backups                    = optional(bool, false)<br/>    ipv4_enabled               = optional(bool, true)<br/>    ipv6_enabled               = optional(bool, true)<br/>    firewall_ids               = optional(list(number), [])<br/>    placement_group_id         = optional(number)<br/>    user_data                  = optional(string)<br/>    labels                     = optional(map(string), {})<br/>    shutdown_before_deletion   = optional(bool, false)<br/>    ignore_remote_firewall_ids = optional(bool, false)<br/>    rebuild_protection         = optional(bool, false)<br/>    delete_protection          = optional(bool, false)<br/><br/>    networks = optional(list(object({<br/>      network_id = number<br/>      ip         = optional(string)<br/>      alias_ips  = optional(list(string), [])<br/>    })), [])<br/><br/>    public_net = optional(object({<br/>      ipv4_enabled = optional(bool, true)<br/>      ipv6_enabled = optional(bool, true)<br/>      ipv4         = optional(number)<br/>      ipv6         = optional(number)<br/>    }))<br/>  }))</pre> | `{}` | no |
+| <a name="input_servers"></a> [servers](#input\_servers) | Map of server configurations keyed by friendly name. | <pre>map(object({<br/>    server_type                = string<br/>    location                   = optional(string)<br/>    image                      = string<br/>    ssh_keys                   = optional(list(number), [])<br/>    keep_disk                  = optional(bool, false)<br/>    iso                        = optional(number)<br/>    rescue                     = optional(string)<br/>    backups                    = optional(bool, false)<br/>    ipv4_enabled               = optional(bool, true)<br/>    ipv6_enabled               = optional(bool, true)<br/>    firewall_ids               = optional(list(number), [])<br/>    placement_group_id         = optional(number)<br/>    user_data                  = optional(string)<br/>    labels                     = optional(map(string), {})<br/>    shutdown_before_deletion   = optional(bool, false)<br/>    ignore_remote_firewall_ids = optional(bool, false)<br/>    rebuild_protection         = optional(bool, false)<br/>    delete_protection          = optional(bool, false)<br/>    allow_deprecated_images    = optional(bool, false)<br/><br/>    networks = optional(list(object({<br/>      network_id = number<br/>      ip         = optional(string)<br/>      alias_ips  = optional(list(string), [])<br/>    })), [])<br/><br/>    public_net = optional(object({<br/>      ipv4_enabled = optional(bool, true)<br/>      ipv6_enabled = optional(bool, true)<br/>      ipv4         = optional(number)<br/>      ipv6         = optional(number)<br/>    }))<br/>  }))</pre> | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_private_network_ips"></a> [private\_network\_ips](#output\_private\_network\_ips) | Map of server names to their private network IP addresses. |
+| <a name="output_private_network_mac_addresses"></a> [private\_network\_mac\_addresses](#output\_private\_network\_mac\_addresses) | Map of server names to their private network interface MAC addresses. |
 | <a name="output_server_ids"></a> [server\_ids](#output\_server\_ids) | Map of server names to their IDs. |
 | <a name="output_server_ipv4_addresses"></a> [server\_ipv4\_addresses](#output\_server\_ipv4\_addresses) | Map of server names to their IPv4 addresses. |
 | <a name="output_server_ipv6_addresses"></a> [server\_ipv6\_addresses](#output\_server\_ipv6\_addresses) | Map of server names to their IPv6 addresses. |

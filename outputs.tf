@@ -6,18 +6,17 @@ output "servers" {
       name               = server.name
       server_type        = server.server_type
       location           = server.location
-      datacenter         = server.datacenter
       image              = server.image
       ipv4_address       = server.ipv4_address
       ipv6_address       = server.ipv6_address
       ipv6_network       = server.ipv6_network
-      backup_window      = server.backup_window
       backups            = server.backups
       iso                = server.iso
       status             = server.status
       labels             = server.labels
       firewall_ids       = server.firewall_ids
       placement_group_id = server.placement_group_id
+      primary_disk_size  = server.primary_disk_size
       rebuild_protection = server.rebuild_protection
       delete_protection  = server.delete_protection
     }
@@ -72,6 +71,15 @@ output "private_network_ips" {
   value = {
     for key, server in hcloud_server.this : key => [
       for network in server.network : network.ip
+    ]
+  }
+}
+
+output "private_network_mac_addresses" {
+  description = "Map of server names to their private network interface MAC addresses."
+  value = {
+    for key, server in hcloud_server.this : key => [
+      for network in server.network : network.mac_address
     ]
   }
 }
