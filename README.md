@@ -23,7 +23,7 @@ Terraform module for managing Hetzner Cloud servers with full support for all pr
 ```hcl
 module "server" {
   source  = "danylomikula/server/hcloud"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   servers = {
     web-1 = {
