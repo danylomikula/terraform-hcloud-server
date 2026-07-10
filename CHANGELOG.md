@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/danylomikula/terraform-hcloud-server/compare/v2.0.0...v3.0.0) (2026-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* requires terraform >= 1.14.0; allow_deprecated_images, ipv4_enabled and ipv6_enabled removed from the servers variable.
+
+### Features
+
+* align module with provider v1.66.0 ([#6](https://github.com/danylomikula/terraform-hcloud-server/issues/6)) ([886ab12](https://github.com/danylomikula/terraform-hcloud-server/commit/886ab12b76d61d288b85de84a4d69155859ee72e))
+
 ## [2.0.0](https://github.com/danylomikula/terraform-hcloud-server/compare/v1.0.0...v2.0.0) (2026-05-03)
 
 
