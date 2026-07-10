@@ -10,8 +10,6 @@ locals {
       iso                        = server.iso
       rescue                     = server.rescue
       backups                    = server.backups
-      ipv4_enabled               = server.ipv4_enabled
-      ipv6_enabled               = server.ipv6_enabled
       firewall_ids               = distinct(concat(var.common_firewall_ids, server.firewall_ids))
       placement_group_id         = server.placement_group_id
       user_data                  = server.user_data
@@ -20,7 +18,6 @@ locals {
       ignore_remote_firewall_ids = server.ignore_remote_firewall_ids
       rebuild_protection         = server.rebuild_protection
       delete_protection          = server.delete_protection
-      allow_deprecated_images    = server.allow_deprecated_images
       networks                   = server.networks
       public_net                 = server.public_net
     }
@@ -47,12 +44,12 @@ resource "hcloud_server" "this" {
   ignore_remote_firewall_ids = each.value.ignore_remote_firewall_ids
   rebuild_protection         = each.value.rebuild_protection
   delete_protection          = each.value.delete_protection
-  allow_deprecated_images    = each.value.allow_deprecated_images
 
   dynamic "network" {
     for_each = each.value.networks
     content {
       network_id = network.value.network_id
+      subnet_id  = network.value.subnet_id
       ip         = network.value.ip
       alias_ips  = network.value.alias_ips
     }

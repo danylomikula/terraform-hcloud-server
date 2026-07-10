@@ -32,8 +32,8 @@ terraform output all_server_ips
 
 | Name | Version |
 | ---- | ------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.13.0 |
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.62.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.14.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.66.0 |
 
 ## Providers
 

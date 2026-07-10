@@ -9,8 +9,6 @@ variable "servers" {
     iso                        = optional(number)
     rescue                     = optional(string)
     backups                    = optional(bool, false)
-    ipv4_enabled               = optional(bool, true)
-    ipv6_enabled               = optional(bool, true)
     firewall_ids               = optional(list(number), [])
     placement_group_id         = optional(number)
     user_data                  = optional(string)
@@ -19,10 +17,10 @@ variable "servers" {
     ignore_remote_firewall_ids = optional(bool, false)
     rebuild_protection         = optional(bool, false)
     delete_protection          = optional(bool, false)
-    allow_deprecated_images    = optional(bool, false)
 
     networks = optional(list(object({
-      network_id = number
+      network_id = optional(number)
+      subnet_id  = optional(string)
       ip         = optional(string)
       alias_ips  = optional(list(string), [])
     })), [])
@@ -35,6 +33,15 @@ variable "servers" {
     }))
   }))
   default = {}
+
+  validation {
+    condition = alltrue(flatten([
+      for server in values(var.servers) : [
+        for network in server.networks : network.network_id != null || network.subnet_id != null
+      ]
+    ]))
+    error_message = "Each network attachment must set at least one of network_id or subnet_id."
+  }
 }
 
 variable "common_ssh_keys" {

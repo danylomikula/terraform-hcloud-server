@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         terraform:
-          - "1.13.0" # min version from versions.tf
+          - "1.14.0" # min version from versions.tf
           - "latest"
     steps:
       - name: Checkout

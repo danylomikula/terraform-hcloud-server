@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">= 1.13.0"
+  required_version = ">= 1.14.0"
 
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = ">= 1.62.0"
+      version = ">= 1.66.0"
     }
   }
 }
@@ -128,8 +128,8 @@ module "servers" {
       image       = data.hcloud_image.ubuntu.name
 
       networks = [{
-        network_id = module.network.network_id
-        ip         = "10.0.1.10"
+        subnet_id = module.network.subnets["web"].id
+        ip        = "10.0.1.10"
       }]
 
       labels = {
@@ -144,8 +144,8 @@ module "servers" {
       image       = data.hcloud_image.ubuntu.name
 
       networks = [{
-        network_id = module.network.network_id
-        ip         = "10.0.1.11"
+        subnet_id = module.network.subnets["web"].id
+        ip        = "10.0.1.11"
       }]
 
       labels = {
