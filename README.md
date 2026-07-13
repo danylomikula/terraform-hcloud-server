@@ -201,7 +201,7 @@ Use `hcloud_image` data source to automatically select the latest image:
 ```hcl
 # Find latest Rocky Linux 9 for x86 architecture.
 data "hcloud_image" "rocky9" {
-  with_selector     = "os-flavor=rocky"
+  with_selector     = "os_flavor=rocky"
   with_architecture = "x86"
   most_recent       = true
 }
@@ -209,7 +209,7 @@ data "hcloud_image" "rocky9" {
 # Find latest Ubuntu for ARM64.
 data "hcloud_image" "ubuntu_arm" {
   name              = "ubuntu-24.04"
-  with_architecture = "arm64"
+  with_architecture = "arm"
 }
 
 # Use in server configuration.
@@ -236,8 +236,8 @@ module "servers" {
 **Data source reference**: https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/image
 
 **Available selectors**:
-- `os-flavor=ubuntu` / `rocky` / `debian` / `fedora`
-- `os-version=22.04` / `9` / `12`
+- `os_flavor=ubuntu` / `rocky` / `debian` / `fedora`
+- `os_version=24.04` / `9` / `12`
 
 **Architectures**:
 - `x86` - Standard Intel/AMD (cx, ccx series)
@@ -250,8 +250,61 @@ module "servers" {
 3. **Apply firewalls** to restrict access.
 4. **Use placement groups** for high availability.
 5. **Set labels** for organization and management.
-6. **Use common_*** variables** to reduce duplication.
+6. **Use `common_*` variables** to reduce duplication.
 7. **Generate SSH keys** via the ssh-key module.
+
+## Importing Existing Servers
+
+Servers created outside Terraform (e.g. via the Hetzner Cloud Console) can be imported into this module. One upstream provider limitation matters here: `terraform import` of `hcloud_server` does not populate the inline `network` and `public_net` blocks in state ([hetznercloud/terraform-provider-hcloud#944](https://github.com/hetznercloud/terraform-provider-hcloud/issues/944)). If an imported server declares these blocks, the first plan shows phantom `network` / `public_net` changes, and applying a `public_net` change power-cycles the server.
+
+The clean pattern is to **omit `networks` and `public_net`** for imported servers and manage attachments outside the server resource. This is a per-server decision, so imported and newly created servers can coexist in one module call.
+
+```hcl
+module "servers" {
+  source  = "danylomikula/server/hcloud"
+  version = "~> 3.0"
+
+  servers = {
+    # Imported server: networks and public_net are deliberately omitted,
+    # so the module emits no inline attachment blocks and the provider
+    # leaves existing attachments untouched.
+    legacy-web = {
+      server_type = "cx23"
+      location    = "nbg1"
+      image       = "ubuntu-24.04"
+    }
+  }
+}
+
+# Import the server by its ID.
+import {
+  to = module.servers.hcloud_server.this["legacy-web"]
+  id = "4711"
+}
+
+# Manage the private network attachment via a separate resource.
+resource "hcloud_server_network" "legacy_web" {
+  server_id  = module.servers.server_ids["legacy-web"]
+  network_id = 98765 # or module.network.network_id from terraform-hcloud-network
+  ip         = "10.0.1.10"
+}
+
+# Import the existing attachment as "<server_id>-<network_id>".
+import {
+  to = hcloud_server_network.legacy_web
+  id = "4711-98765"
+}
+```
+
+Primary IPs need no extra configuration: with `public_net` omitted they stay attached and unmanaged. To bring them under Terraform as well, import `hcloud_primary_ip` resources by ID and bind them with `assignee_type = "server"` / `assignee_id`.
+
+**Import checklist:**
+
+1. Use the real server name as the key in `servers` — the module sets `name` from the key, so a different key renames the server.
+2. Match `server_type`, `location` and `image` to the live server (check with `hcloud server describe <name>`); a mismatched `image` forces replacement. Verify the first plan shows no destroy/replace actions.
+3. Mirror other live settings that differ from module defaults (e.g. `backups = true`).
+
+**Trade-offs:** without inline blocks the `private_network_ips` and `private_network_mac_addresses` outputs are empty for imported servers, and `ipv4_enabled` / `ipv6_enabled` cannot be toggled through the module. Switching an imported server to inline `networks` / `public_net` later re-manages attachments through the server resource — plan carefully, as `public_net` changes power-cycle the server.
 
 ## Lifecycle Considerations
 
